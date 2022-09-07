@@ -132,9 +132,10 @@ const timeDiff = (time1, time2) => {
     let diffAsString;
 
     const minutes = Math.round(diffAsSeconds / 60);
-    const hours = Math.random(minutes / 60);
-    const days = Math.random(hours / 24);
+    const hours = Math.round(minutes / 60);
+    const days = Math.round(hours / 24);
 
+    debugger;
     if (minutes > 1) {
         diffAsString = "about " + minutes + " minutes";
     }
@@ -143,7 +144,7 @@ const timeDiff = (time1, time2) => {
     }
 
     if (hours > 1) {
-        diffAsString = "about " + hours + " minutes";
+        diffAsString = "about " + hours + " hours";
     }
 
     if (days > 1) {
@@ -152,7 +153,6 @@ const timeDiff = (time1, time2) => {
 
     return diffAsString;
 }
-
 
 const takeNewId = (array) => {
     const ids = array?.map(t => t.id);
@@ -395,7 +395,7 @@ const saveTask = (taskName) => {
                 name: taskName,
                 status: "open",
                 createdDate: Date.now(),
-                completedTim: null,
+                completedTime: null,
                 isFavorited: false,
                 tagIds: tagIds
             };
@@ -488,7 +488,7 @@ const deleteTask = (id, button) => {
 }
 
 const clearTasks = () => {
-    showModal("Delete Tasks", "Do you really delete all tasks?", () => {
+    showModal("Delete Tasks", "Do you really want to delete all tasks?", () => {
         tasks = null;
         localStorage.removeItem(tasksKey);
         playAudio("delete.mp3");
@@ -501,7 +501,6 @@ const getTasksByTag = (id, button) => {
     const tasksByTag = tasks.filter(t => t.tagIds.includes(id));
     showTasks(tasksByTag);
 }
-
 
 const addNewTag = (newTag) => {
     if (newTag) {
@@ -519,10 +518,7 @@ const addNewTag = (newTag) => {
     }
 };
 
-btnSaveTask.addEventListener("click", () => {
-    saveTask(txtTask.value);
-}
-);
+btnSaveTask.addEventListener("click", () => { saveTask(txtTask.value); });
 btnClearTasks.addEventListener("click", clearTasks);
 txtTask.addEventListener("keyup", (e) => {
     if (txtTask.value.length > 0) {
