@@ -135,7 +135,6 @@ const timeDiff = (time1, time2) => {
     const hours = Math.round(minutes / 60);
     const days = Math.round(hours / 24);
 
-    debugger;
     if (minutes > 1) {
         diffAsString = "about " + minutes + " minutes";
     }
@@ -209,11 +208,11 @@ const createLiHtml = (task) => {
 
     li += `
             <div>                      
-                <button type="button" class="btn btn-sm btn-success-light" title='${titleTypeForCompleteBtn} "${task.name}" task' onclick="${task.status == "completed" ? `reopenTask(${task.id},this)` : `completeTask(${task.id},this)`}">${buttonTypeForCompleteBtn}</i></button>                           
-                <button type="button" class="btn btn-sm btn-primary-light" title='Favorite "${task.name}" task' onclick="changeFavoriteStatusTask(${task.id},this)">${isFavorited}</button>                           
-                <button type="button" class="btn btn-sm btn-success-light" title='Progress "${task.name}" task' onclick="changeProgressStatusTask(${task.id},this)" ${isDisableProgress}>${progressStatus}</button>
-                <button type="button" class="btn btn-sm btn-warning-light" title='Edit "${task.name}" task' onclick="editTask(${task.id},this)"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button type="button" class="btn btn-sm btn-danger-light"  title='Delete "${task.name}" task' onclick="deleteTask(${task.id},this)"><i class="fa-solid fa-trash"></i></button>               
+                <button type="button" class="btn btn-sm btn-success-light" data-toggle="tooltip" data-placement="top" title='${titleTypeForCompleteBtn} "${task.name}" task' onclick="${task.status == "completed" ? `reopenTask(${task.id},this)` : `completeTask(${task.id},this)`}">${buttonTypeForCompleteBtn}</i></button>                           
+                <button type="button" class="btn btn-sm btn-primary-light" data-toggle="tooltip" data-placement="top" title='Favorite "${task.name}" task' onclick="changeFavoriteStatusTask(${task.id},this)">${isFavorited}</button>                           
+                <button type="button" class="btn btn-sm btn-success-light" data-toggle="tooltip" data-placement="top" title='Progress "${task.name}" task' onclick="changeProgressStatusTask(${task.id},this)" ${isDisableProgress}>${progressStatus}</button>
+                <button type="button" class="btn btn-sm btn-warning-light" data-toggle="tooltip" data-placement="top" title='Edit "${task.name}" task' onclick="editTask(${task.id},this)"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button type="button" class="btn btn-sm btn-danger-light"  data-toggle="tooltip" data-placement="top" title='Delete "${task.name}" task' onclick="deleteTask(${task.id},this)"><i class="fa-solid fa-trash"></i></button>               
             </div>
         </div>
         `;
@@ -316,6 +315,10 @@ const getTasksBySelect = () => {
     }
 }
 
+const hideTooltips = () => {
+    $('.tooltip').hide();
+}
+
 const showTasks = (tasks) => {
     ulTasks.innerHTML = "";
     bsColorIndex = 0;
@@ -333,6 +336,7 @@ const showTasks = (tasks) => {
 
     $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
     reloadTaskCount(tasks);
+    hideTooltips();
 }
 
 const clearElements = () => {
