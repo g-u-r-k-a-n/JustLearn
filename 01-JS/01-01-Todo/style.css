@@ -1,0 +1,46 @@
+.task h5.checked {
+    text-decoration: line-through;
+}
+
+button:hover:enabled {
+    cursor: pointer;
+}
+
+:root {
+    --light-blue: #0062cc2e;
+    --light-green: #1e7e3426;
+    --light-red: #dc353538;
+    --light-yellow: #ffc1073d;
+}
+
+.bg-primary-light {
+    background-color: var(--light-blue);
+}
+
+.bg-success-light {
+    background-color: var(--light-green);
+}
+
+.bg-danger-light {
+    background-color: var(--light-red);
+}
+
+.bg-warning-light {
+    background-color: var(--light-yellow);
+}
+
+.btn-primary-light {
+    background-color: var(--light-blue);
+}
+
+.btn-success-light {
+    background-color: var(--light-green);
+}
+
+.btn-danger-light {
+    background-color: var(--light-red);
+}
+
+.btn-warning-light {
+    background-color: var(--light-yellow);
+}
