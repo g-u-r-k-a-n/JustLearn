@@ -127,27 +127,37 @@ const elapsedTimeToNow = function (timestamp) {
 }
 
 const timeDiff = (time1, time2) => {
-    const diffAsSeconds = Math.round((time2 - time1) / 1000);
+    const seconds = Math.round((time2 - time1) / 1000);
 
     let diffAsString;
 
-    const minutes = Math.round(diffAsSeconds / 60);
+    const minutes = Math.round(seconds / 60);
     const hours = Math.round(minutes / 60);
     const days = Math.round(hours / 24);
+    const weeks = Math.round(days / 7);
+    const months = Math.round(days / 30);
 
     if (minutes > 1) {
-        diffAsString = "about " + minutes + " minutes";
+        diffAsString = `about ${minutes} minutes`;
     }
     else {
-        diffAsString = "about " + diffAsSeconds + " seconds";
+        diffAsString = `about ${seconds} seconds`;
     }
 
     if (hours > 1) {
-        diffAsString = "about " + hours + " hours";
+        diffAsString = `about ${hours} hours`;
     }
 
     if (days > 1) {
-        diffAsString = "about " + days + " days";
+        diffAsString = `about ${days} days`;
+    }
+
+    if (weeks > 1) {
+        diffAsString = `about ${weeks} weeks`;
+    }
+
+    if (months > 1) {
+        diffAsString = `about ${months} months`;
     }
 
     return diffAsString;
@@ -203,14 +213,15 @@ const createLiHtml = (task) => {
     const isFavorited = task.isFavorited ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star"></i>';
     const progressStatus = task.status == "progress" ? '<i class="fa-solid fa-circle-play"></i>' : '<i class="fa-regular fa-circle-play"></i>';
     const isDisableProgress = task.status == "completed" ? "disabled" : null;
+    const isProgress = task.status == "progress" ? true : false;
     const buttonTypeForCompleteBtn = task.status == "completed" ? '<i class="fa-solid fa-arrow-rotate-left"></i>' : '<i class="fa-solid fa-check">';
     const titleTypeForCompleteBtn = task.status == "completed" ? "Reopen" : "Complete";
 
     li += `
             <div>                      
                 <button type="button" class="btn btn-sm btn-success-light" data-toggle="tooltip" data-placement="top" title='${titleTypeForCompleteBtn} "${task.name}" task' onclick="${task.status == "completed" ? `reopenTask(${task.id},this)` : `completeTask(${task.id},this)`}">${buttonTypeForCompleteBtn}</i></button>                           
-                <button type="button" class="btn btn-sm btn-primary-light" data-toggle="tooltip" data-placement="top" title='Favorite "${task.name}" task' onclick="changeFavoriteStatusTask(${task.id},this)">${isFavorited}</button>                           
-                <button type="button" class="btn btn-sm btn-success-light" data-toggle="tooltip" data-placement="top" title='Progress "${task.name}" task' onclick="changeProgressStatusTask(${task.id},this)" ${isDisableProgress}>${progressStatus}</button>
+                <button type="button" class="btn btn-sm btn-primary-light" data-toggle="tooltip" data-placement="top" title='Mark as ${!task.isFavorited ? "favorite" : "unfavorite"} "${task.name}" task' onclick="changeFavoriteStatusTask(${task.id},this)">${isFavorited}</button>                           
+                <button type="button" class="btn btn-sm btn-success-light" data-toggle="tooltip" data-placement="top" title='Mark as ${!isProgress ? "progress" : "open"} "${task.name}" task' onclick="changeProgressStatusTask(${task.id},this)" ${isDisableProgress}>${progressStatus}</button>
                 <button type="button" class="btn btn-sm btn-warning-light" data-toggle="tooltip" data-placement="top" title='Edit "${task.name}" task' onclick="editTask(${task.id},this)"><i class="fa-solid fa-pen-to-square"></i></button>
                 <button type="button" class="btn btn-sm btn-danger-light"  data-toggle="tooltip" data-placement="top" title='Delete "${task.name}" task' onclick="deleteTask(${task.id},this)"><i class="fa-solid fa-trash"></i></button>               
             </div>
@@ -241,34 +252,34 @@ const createLiHtml = (task) => {
         li += tagsHtml;
     }
 
-    li += `     <div class="row card mt-2">
-                    <div class="card-header d-flex justify-content-between">                    
-                        <span><i class="fa-solid fa-calendar-days"></i> ${datetimeAsString(new Date(task.createdDate))}</span>
-                        <span><i class="fa-regular fa-clock"></i> ${elapsedTimeToNow(task.createdDate)}</span>
-                    </div>
-                    <span class="badge badge-dark">${capitalizeFirstLetter(task.status)}</span>
-                    `;
+    li += `<div class="row card mt-2">
+               <div class="card-header d-flex justify-content-between">                    
+                   <span><i class="fa-solid fa-calendar-days"></i> ${datetimeAsString(new Date(task.createdDate))}</span>                        
+                   <span><i class="fa-regular fa-clock"></i> opened ${elapsedTimeToNow(task.createdDate)}</span>
+               </div>
+               <span class="badge badge-dark">${capitalizeFirstLetter(task.status)}</span>
+               `;
 
     if (task.status == "completed" && task.completedTime) {
-        li += `
-                <div class="card-footer d-flex justify-content-between">
-                    <span><i class="fa-solid fa-square-check"></i> ${datetimeAsString(new Date(task.completedTime))}</span>
-                    <span><i class="fa-solid fa-hourglass-end"></i> ${timeDiff(new Date(task.createdDate), new Date(task.completedTime))}</span>
-                </div>
-                `;
+        li += `               <div class="card-footer d-flex justify-content-between">
+                   <span><i class="fa-solid fa-square-check"></i> ${datetimeAsString(new Date(task.completedTime))}</span>
+                   <span><i class="fa-solid fa-hourglass-end"></i> done in ${timeDiff(new Date(task.createdDate), new Date(task.completedTime))}</span>
+               </div>
+               `;
     }
 
     li += `
                 </div>
             </div>
-        </li>`;
+        </li>
+        `;
 
     isBgLight = !isBgLight;
     return li;
 }
 
 const datetimeAsString = (d) => {
-    return `${d.toLocaleDateString()} - ${("0" + d.getHours()).slice(-2)}:${("0" + d.getMinutes()).slice(-2)}:${("0" + d.getSeconds()).slice(-2)}`;
+    return `${d.toLocaleDateString()} - ${("0" + d.getHours()).slice(-2)}:${("0" + d.getMinutes()).slice(-2)}`;
 }
 
 $("#slcTaskStatuses").chosen().val(Array.from(slcTaskStatuses.children).map(o => o.value)).trigger("chosen:updated");
