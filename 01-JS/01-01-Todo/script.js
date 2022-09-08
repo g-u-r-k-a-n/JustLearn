@@ -257,7 +257,7 @@ const createLiHtml = (task) => {
                    <span><i class="fa-solid fa-calendar-days"></i> ${datetimeAsString(new Date(task.createdDate))}</span>                        
                    <span><i class="fa-regular fa-clock"></i> opened ${elapsedTimeToNow(task.createdDate)}</span>
                </div>
-               <span class="badge badge-dark">${capitalizeFirstLetter(task.status)}</span>
+               <span id='lblStatus${task.id}' class="badge badge-dark">${capitalizeFirstLetter(task.status)}</span>
                `;
 
     if (task.status == "completed" && task.completedTime) {
@@ -465,7 +465,7 @@ const changeProgressStatusTask = (id, button) => {
     else
         progressToTask.status = "progress";
 
-    changeStatus("click");
+    $(`#lblStatus${id}`).fadeOut("1000", () => changeStatus("click"));
 }
 
 const changeFavoriteStatusTask = (id, button) => {
