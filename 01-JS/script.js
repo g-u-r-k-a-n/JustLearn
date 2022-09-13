@@ -240,39 +240,181 @@ console.log("uls classes : ", ulsClasses);
 //Create Element-2
 const li2 = document.createElement("li");
 
-
 //Events
-//btnAddTask.addEventListener("mousedown", eventHandler);//when click the button
-//btnAddTask.addEventListener("mouseup", eventHandler);//when leave the button
+function eventHandler(e) {
+    console.log("event", e);
+    console.log("box", e.target.id);
+    //e.stopPropagation();//to prevent the event bubbling or capturing
+}
 
-// txtTask.addEventListener("keydown", eventHandler);
-// txtTask.addEventListener("keypress", eventHandler);
-// txtTask.addEventListener("keyup", keyhandler);
 
-// function keyhandler(e) {
-//     console.log(`key value : ${e.target.value}`);
-//     console.log(`key code : ${e.keyCode}`);
-// }
+const txtCoordinats = document.getElementById("txtCoordinats");
+const writeCoordinats = (e) => {
+    txtCoordinats.value = `${e.target.id}'s X : ${e.offsetX} Y: ${e.offsetY}
+                           Page  X : ${e.clientX} Y: ${e.clientY}
+                          `;
+}
 
-// const h5 = document.querySelector("h4");
-// function mousemovehandler(e) {
-//     h5.textContent = `X : ${e.offsetX} Y : ${e.offsetY}`;
-// }
-//Event Bubbling(inside-out)
-// const box1 = document.querySelector("#box1");
-// const box2 = document.querySelector("#box2");
-// const box3 = document.querySelector("#box3");
-// const box4 = document.querySelector("#box4");
+const boxClicked = (e) => {
+    console.log(e.target.id + " clicked");
+}
 
-// box1.addEventListener("click", eventhandler);
-// box2.addEventListener("click", eventhandler);
-// box3.addEventListener("click", eventhandler);
-// box4.addEventListener("click", eventhandler);
+const boxes = document.querySelectorAll(".box");
+for (let i = 0; i < boxes.length; i++) {
+    const box = boxes[i];
+    box.id = `box${i + 1}`;
+}
 
-// function eventhandler(e) {
-//     console.log(e.target.id);
-//     //e.stopPropagation();//to prevent the event bubbling or capturing
-// }
-//3rd parameter must be true for event capturing instead of bubbling in addEventListener()
+boxes.forEach(b => b.addEventListener("mousemove", writeCoordinats));
+boxes.forEach(b => b.addEventListener("click", boxClicked,/*Event bubbling: defalut value is true. so if you click on the inner boxes you will see the text "clicked" in the console more than once. parameter must be true for event capturing instead of bubbling*/));
 
+const txtAnything = document.getElementById("txtAnything");
+const lblAnything = document.getElementById("lblAnything");
+const writtenHandler = (e) => {
+    lblAnything.textContent += " " + e.key;
+}
+txtAnything.addEventListener("keyup", writtenHandler)
 /****** DOM *******/
+
+/****** Built-in Objects *******/
+const map = new Map();
+map.set(1, "Product1");
+map.set(2, "Product2");
+map.set(1, "Product1");//Not added because Map object is unique
+map.set(3, "Product3");
+console.log(map.entries());
+
+const set = new Set();
+set.add(1);
+set.add(2);
+set.add(1);//Not added because Set object is unique
+set.add(3);
+console.log(set);
+/****** Built-in Objects *******/
+
+/****** Asynchronous Operations *******/
+
+//Async operation with callback function
+const firstFunction = (callback) => {
+    console.log("1st function");
+    if (typeof callback === "function") {
+        callback();
+    }
+}
+
+const secondFunction = (callback) => {
+    setTimeout(() => {
+        console.log("2nd function");
+        if (typeof callback === "function") {
+            callback();
+        }
+    }, 100);
+}
+
+const thirdFunction = () => {
+    console.log("3rd function waited 100 ms for 2nd function to complete to execute");
+}
+
+firstFunction(secondFunction(thirdFunction));
+
+//AJAX
+const xhr = new XMLHttpRequest();
+let url = "https://jsonplaceholder.typicode.com/users";
+xhr.open("get", url);
+xhr.send();
+
+const transferComplete = (e) => {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        const users = JSON.parse(xhr.response);
+        for (const user of users.filter(u => u.id <= 3)) {
+            console.log("jsonplaceholder", user);
+        }
+    }
+}
+
+const transferFailed = (e) => {
+    console.log("AJAX error", e);
+}
+
+xhr.addEventListener("load", transferComplete);
+xhr.addEventListener("error", transferFailed);
+
+const isSuccess = true;
+//Promise object
+const promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        if (isSuccess) {
+            resolve("success");
+        }
+        else
+            reject("bad request");
+    }, 1500);
+})
+
+promise.then(data => { console.log("Promise result", data); })
+    .catch(err => { console.log("Promise error", err); });
+
+const login = (username, password) => {
+    return new Promise((res, rej) => {
+        setTimeout(() => {
+            if (username == "admin" && password == "123") {
+                res({ status: "success", username: username });
+            }
+            else {
+                rej({ status: "fail", user: null });
+            }
+        }, 2000);
+    });
+}
+
+const getInfoByUser = (user) => {
+    return new Promise((res, rej) => {
+        setTimeout(() => {
+            if (user.username == "admin") {
+                res("Admin Info success");
+            }
+            else {
+                rej("Admin Info Error");
+            }
+        }, 2100);
+    })
+}
+
+login("admin", "123")
+    .then(data => {
+        console.log("Promise user login", data);
+        return getInfoByUser(data);
+    })
+    .then(data => {
+        console.log("Promise login() result", data);
+    })
+    .catch(err => console.log(err));
+
+//Promise & Fetch API
+fetch(url)
+    .then(res => {
+        if (!res.ok) {
+            throw new Error("no data");
+        }
+        return res.json();
+    })
+    .then(data => console.log("fetch() Data :", data))
+    .catch(err => console.log("fetch() :", err));
+
+// async & await usage
+const getUser = async (username, password) => {
+    try {
+        const promiseResponse = await login(username, password);
+        console.log("waiting for login()...");
+        if (promiseResponse.status == "success") {
+            const promiseInfo = await getInfoByUser(promiseResponse);
+            console.log("waiting for getInfoByUser()...");
+            console.log("async & await :", promiseInfo);
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+getUser("admin", "123");
+
+/****** Asynchronous Operations *******/
