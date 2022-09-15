@@ -418,3 +418,86 @@ const getUser = async (username, password) => {
 getUser("admin", "123");
 
 /****** Asynchronous Operations *******/
+
+/****** JS Patterns *******/
+
+//Module Pattern -IIFE
+var counter = (function () {
+
+    let number = 0;
+
+    const increment = () => ++number;
+    const decrement = () => --number;
+    const getNumber = () => number;
+
+    return {
+        increment,
+        decrement,
+        getNumber
+    }
+})();
+
+console.log("counter module getNumber() :", counter.getNumber());
+console.log("counter module increment() :", counter.increment());
+console.log("counter module increment() :", counter.increment());
+console.log("counter module getNumber() :", counter.getNumber());
+console.log("counter module decrement() :", counter.decrement());
+console.log("counter module getNumber() :", counter.getNumber());
+
+let products = [
+    { id: 1, name: "Product1" },
+    { id: 2, name: "Product2" },
+    { id: 3, name: "Product3" }
+];
+
+var productController = (function (data) {
+
+    var products = data || [];
+
+    function getAll() {
+        return products;
+    }
+
+    function getById(id) {
+        return products.find(p => p.id == id);
+    }
+
+    function add(p) {
+        products.push(p);
+    }
+
+    function update(product) {
+        products.splice(products.indexOf(p => p.id == product.id), 1, product);
+    }
+
+    function remove(id) {
+        products.splice(products.indexOf(p => p.id == id), 1);
+    }
+
+    return {
+        getAll,
+        getById,
+        add,
+        update,
+        remove
+    }
+})(products);
+
+productController.add({ id: 4, name: "Product4" });
+productController.remove(4);
+productController.update({ id: 3, name: "Product 33" });
+console.log("productController getAll()", productController.getAll());
+
+//Module Extending
+var extProductController = (function (module) {
+
+    module.clear = () => {
+        products = [];
+    }
+
+    return module;
+})(productController || {});
+
+extProductController.clear();
+
+/****** JS Patterns *******/
