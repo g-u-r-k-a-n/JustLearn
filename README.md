@@ -8,7 +8,7 @@
   - [03-TypeScript](https://github.com/g-u-r-k-a-n/JustLearn/tree/master/03-TypeScript)  
       
       ![image](https://user-images.githubusercontent.com/55924924/190378823-5b2efcd4-3301-456e-a941-9529f9b15fce.png)
-
-
-
-  
+      
+  - [04-Angular](https://github.com/g-u-r-k-a-n/JustLearn/tree/master/04-Angular) with https://www.themoviedb.org services 
+      
+      ![1](https://user-images.githubusercontent.com/55924924/194769341-5a790f54-bf2b-4669-83bf-57376a2e2a10.gif)
