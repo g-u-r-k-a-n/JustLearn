@@ -1,0 +1,55 @@
+<nav class="mt-3" *ngIf="urlPath">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" *ngIf="model.page>1">
+        <a class="page-link"
+        routerLink="/{{urlPath}}" 
+        (click)="reloadComponent()">          
+            <i class="fa-solid fa-backward-fast"></i>          
+        </a>
+      </li>
+      <li class="page-item" *ngIf="model.page>10">
+        <a class="page-link"
+          routerLink="/{{urlPath}}/pages/{{getPreviousPages(model)}}"
+          (click)="reloadComponent()">          
+            <i class="fa-solid fa-backward"></i>          
+        </a>        
+      </li>
+      <li class="page-item" *ngIf="model.page>1">
+        <a class="page-link" 
+        routerLink="/{{urlPath}}/pages/{{model.page-1}}" 
+        (click)="reloadComponent()">
+          <i class="fa-solid fa-caret-left"></i>
+        </a>
+      </li>
+      <li class="page-item" *ngFor="let currentPage of pageCount">
+        <a class="page-link" *ngIf="currentPage <= model.total_pages"
+        routerLink="/{{urlPath}}/pages/{{currentPage}}" 
+        [class.active]="model.page==currentPage" 
+        (click)="reloadComponent()">{{currentPage}}</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link"
+        routerLink="/{{urlPath}}/pages/{{model.page+1}}" 
+        [class.disabled]="model.page==model.total_pages"
+        (click)="reloadComponent()">
+        <i class="fa-solid fa-caret-right"></i>
+      </a>        
+      </li>
+      <li class="page-item">
+        <a class="page-link"
+          routerLink="/{{urlPath}}/pages/{{getNextPages(model)}}" 
+          [class.disabled]="model.page==model.total_pages"
+          (click)="reloadComponent()">
+          <i class="fa-solid fa-forward"></i>
+        </a>        
+      </li>
+      <li class="page-item">
+        <a class="page-link" 
+        routerLink="/{{urlPath}}/pages/{{model.total_pages}}"
+        [class.disabled]="model.page==model.total_pages"
+        (click)="reloadComponent()">
+          <i class="fa-solid fa-forward-fast"></i>
+        </a>        
+      </li>
+    </ul>
+</nav>

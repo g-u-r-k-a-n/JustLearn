@@ -1,0 +1,23 @@
+<app-navbar></app-navbar>
+<div class="alert alert-danger m-3" *ngIf="error">{{error}}</div>
+<div class="contanier m-3">
+  <div class="row">
+    <div class="col-lg-2 col-md-3 col-sm-4">
+      <app-genres></app-genres>
+    </div>
+    <div class="col-lg-10 col-md-9 col-sm-8">
+      <router-outlet></router-outlet>     
+    </div>
+  </div>  
+  <footer>
+    <hr>
+    <a href="https://gurkantuna.com?ref=tmdb.org-github" target="_blank">
+      <div class="text-end me-5">
+        <small>made by</small>
+        <img src="https://gurkantuna.com/img/apple-touch-icon.png" alt="http://gurkantuna.com" title="https://gurkantuna.com" class="ms-1">
+        <small class="text-muted fw-light"> gurkantuna.com</small>
+      </div>
+    </a>
+  </footer>
+  <a class="back-to-top" (click)="backToTop()"><i class="fa fa-chevron-up"></i></a>
+</div>

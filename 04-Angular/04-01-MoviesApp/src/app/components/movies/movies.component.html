@@ -1,0 +1,54 @@
+<div class="alert alert-danger" *ngIf="errorMessage;else movieTemplate">{{errorMessage}}</div>
+<div class="spinner-grow" [class.d-none]="loaded" >
+    <span class="visually-hidden">Loading...</span>
+</div>
+<ng-template #movieTemplate>
+    <div class="card mb-3" *ngIf="model.header">
+        <div class="card-body">
+            <h5 class="card-title">{{model.header}} Movies</h5>
+            <h6 class="card-subtitle mb-2 text-muted"
+                *ngIf="model.header!='Similar' && model.total_pages">
+                {{model.total_results}} movies found in total {{model.total_pages}} pages. Current Page : {{model.page}}
+            </h6>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card-deck col-lg-3 col-md-6 mb-3" *ngFor="let movie of model.results">
+            <div class="card">
+                <a routerLink="/movie/{{movie.id}}" (click)="reloadComponent()">
+                    <img *ngIf="movie.poster_path;else noPoster"
+                     class="card-img-top img-responsive"
+                    src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/{{movie.poster_path}}" [alt]="movie.title"
+                    [title]="movie.title">
+                    <ng-template #noPoster>
+                        <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg"
+                        class="card-img-top img-responsive movies-poster border-bottom p-2" [alt]="movie.title" [title]="movie.title">
+                    </ng-template>
+                </a>                
+                <div class="d-flex flex-row img-top ms-3 mt-3">
+                    <a routerLink="/genre/{{genre.id}}" routerLinkActive="active"
+                        *ngFor="let genre of movie.genres;let i=index;">
+                        <span class="badge shadow" 
+                            *ngIf="i<=2" 
+                            [class]='{"text-bg-success":i==0,
+                                        "text-bg-primary":i==1,
+                                        "text-bg-dark":i==2,
+                                        "ms-1":i>0}'>{{genre.name}}</span>
+                    </a>
+                </div>
+                <span class="badge img-top shadow text-bg-warning bg-warning m-3 top-0 end-0"><i
+                        class="fa-solid fa-chart-simple"></i> {{movie.vote_average | precision}}</span>
+                <div class="card-body">
+                    <a routerLink="/movie/{{movie.id}}" (click)="reloadComponent()">
+                        <h5 class="card-title">{{movie.title}}</h5>
+                    </a>
+                    <p class="card-text">{{movie.overview | summary}}</p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted"><i class="fa-solid fa-video"></i> {{movie.release_date}}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-pagination [model]="model"></app-pagination>
+</ng-template>

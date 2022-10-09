@@ -1,0 +1,4 @@
+<div class="list-group">
+    <a routerLink="/genre/{{genre.id}}" routerLinkActive="active" (click)="reloadComponent()"
+        class="list-group-item list-group-item-action" *ngFor="let genre of genres">{{genre.name}}</a>
+</div>

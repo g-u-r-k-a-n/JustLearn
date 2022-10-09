@@ -1,0 +1,142 @@
+<div class="spinner-grow" [class.d-none]="loaded" >
+    <span class="visually-hidden">Loading...</span>
+</div>
+<div class="movie card mb-3" *ngIf="movie">
+    <div class="row g-0">
+        <div class="col-lg-5 col-md-4">
+            <div class="img-container">
+                <img *ngIf="movie.poster_path;else noPoster"
+                src="https://image.tmdb.org/t/p/original/{{movie.poster_path}}" class="img-thumbnail img-fluid poster m-3" [alt]="movie.title" [title]="movie.title">
+                <ng-template #noPoster>
+                    <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg" class="img-thumbnail img-fluid poster m-3" [alt]="movie.title" [title]="movie.title">
+                </ng-template>
+                <div class="d-flex flex-row top-left ms-3 mt-3">
+                    <a routerLink="/genre/{{genre.id}}" routerLinkActive="active"
+                        *ngFor="let genre of movie.genres;let i=index;">
+                        <span class="badge shadow" [class.text-bg-success]="i==0" [class.text-bg-primary]="i==1"
+                            [class.text-bg-dark]="i==2" [class.ms-1]="i>0">{{genre.name}}</span>
+                    </a>
+                </div>
+                <span class="badge top-right shadow text-bg-warning bg-warning m-3"><i class="fa-solid fa-chart-simple"></i>
+                    {{movie.vote_average | precision }}</span>
+            </div>
+        </div>
+        <div class="col-lg-7 col-md-8">
+            <ul class="list-group list-group-flush mt-1">
+                <li class="list-group-item d-flex align-items-center" data-bs-toggle="tooltip" title="Budget" data-bs-placement="left">
+                    <i class="fa-2x fa-solid fa-wallet"></i>
+                    <i class="fa-solid fa-dollar-sign"></i>{{movie.budget | number}}
+                </li>
+                <li class="list-group-item d-flex align-items-center" data-bs-toggle="tooltip" title="Popularity" data-bs-placement="left">
+                    <i class="fa-2x fa-solid fa-arrow-up-right-dots"></i> {{movie.popularity | number}}
+                </li>
+                <li class="list-group-item d-flex align-items-center" data-bs-toggle="tooltip" title="Release Date" data-bs-placement="left">
+                    <i class="fa-2x fa-solid fa-video"></i>{{movie.release_date}}
+                </li>
+                <li class="list-group-item d-flex align-items-center" data-bs-toggle="tooltip" title="Revenue" data-bs-placement="left"><i
+                        class="fa-2x fa-brands fa-shopify"></i>
+                        <i class="fa-solid fa-dollar-sign"></i>{{movie.revenue | number}}</li>
+                <li class="list-group-item d-flex align-items-center" data-bs-toggle="tooltip" title="Tagline" data-bs-placement="left">
+                    <i class="fa-2x fa-solid fa-tags"></i>{{movie.tagline }}</li>
+                <li class="list-group-item d-flex align-items-center" data-bs-toggle="tooltip" title="Homepage" data-bs-placement="left">
+                    <i class="fa-2x fa-solid fa-globe"></i>
+                    <a [href]="movie.homepage" target="_blank">{{movie.homepage }}</a>
+                </li>
+                <li class="list-group-item d-flex align-items-center" data-bs-toggle="tooltip" title="IMDB Page" data-bs-placement="left">
+                    <i class="fa-2x fa-brands fa-imdb"></i>
+                    <a [href]="'https://www.imdb.com/title/'+movie.imdb_id" target="_blank">{{'https://www.imdb.com/title/'+movie.imdb_id }}</a>
+                </li>
+                <li class="list-group-item" data-bs-toggle="tooltip" title="Spoken Languages" data-bs-placement="left">
+                    <div class="row align-items-center">
+                        <div class="col-1">
+                            <i class="fa-2x fa-solid fa-microphone"></i>
+                        </div>
+                        <div class="col-11">
+                            <div class="d-flex justify-content-around">
+                                <span class="badge text-bg-warning bg-warning"
+                                    *ngFor="let language of movie.spoken_languages">{{language.english_name}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item" data-bs-toggle="tooltip" title="Production Countries" data-bs-placement="left">
+                    <div class="row align-items-center">
+                        <div class="col-1">
+                            <i class="fa-2x fa-solid fa-city"></i>
+                        </div>
+                        <div class="col-11">
+                            <div class="d-flex justify-content-around">
+                                <span class="badge text-bg-warning bg-warning"
+                                    *ngFor="let country of movie.production_countries">{{country.name}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item" data-bs-toggle="tooltip" title="Companies" data-bs-placement="left">
+                    <div class="row align-items-center">
+                        <div class="col-1">
+                            <i class="fa-2x fa-solid fa-clapperboard"></i>
+                        </div>
+                        <div class="col-11">
+                            <div class="d-flex justify-content-around">
+                                <div *ngFor="let company of movie.production_companies; let i=index">                                    
+                                    <img *ngIf="i<=3 && company.logo_path" class="company-img" src="https://image.tmdb.org/t/p/original/{{company.logo_path}}" alt="{{company.name}}" title="{{company.name}}">                                    
+                                    <span *ngIf="i<=3 && !company.logo_path">{{company.name}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item" data-bs-toggle="tooltip" title="Acting" data-bs-placement="left">                      
+                        <div class="d-flex justify-content-evenly align-items-center">
+                            <div *ngFor="let person of cast" class="mb-1">
+                            <div *ngIf="person.profile_path;else noProfilePath">
+                                <a routerLink="/cast/{{person.id}}">
+                                    <div class="row">
+                                        <div class="text-center">
+                                            <div>{{person.name}}<br> as <i>{{person.character | summary : 20}}</i></div>
+                                            <div>
+                                                <img class="person-img img-thumbnail" src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/{{person.profile_path}}" alt="{{person.name}}" title="{{person.name}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <ng-template #noProfilePath>
+                                <a routerLink="/cast/{{person.id}}">
+                                    <div class="row">
+                                        <div class="text-center">
+                                            <div>{{person.name}}<br> as <i>{{person.character}}</i></div>                                            
+                                        </div>
+                                    </div>
+                                </a>
+                            </ng-template>
+                        </div>
+                    </div>                                                            
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{movie.title}}</h5>
+            <p class="card-text">{{movie.overview}}</p>
+        </div>
+    </div>
+    <div class="row review card m-3" *ngIf="movie.reviews && movie.reviews.length>0">
+        <h3><i class="fa-solid fa-comments"></i> Reviews</h3>
+        <hr>
+        <div class="col-sm-12" *ngFor="let review of movie.reviews">
+            <div class="card-body">
+                <h5 class="card-title">{{review.author}}</h5>
+                <div class="clearfix">
+                    <a href="{{review.url}}" target="_blank">
+                        <img src="{{getReviewAvatarImage(review.author_details.avatar_path)}}"
+                            class="img-thumbnail rounded float-start m-2" [alt]="review.author" [title]="review.author">
+                    </a>
+                    <p class="card-text" [innerHtml]="review.content" markdown>{{review.content}}</p>
+                </div>
+                <p class="card-text"><small class="text-muted">{{review.created_at | date:"MM/dd/yy hh:mm"}}</small></p>
+            </div>
+        </div>
+    </div>
+</div>
+<app-movies [model]="model"></app-movies>

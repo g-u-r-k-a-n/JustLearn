@@ -1,0 +1,35 @@
+<div class="cast card mb-3" *ngIf="person">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img *ngIf="person.profile_path;else noPoster" src="https://image.tmdb.org/t/p/original/{{person.profile_path}}" class="img-fluid rounded-start" [alt]="person.name" [title]="person.name">      </div>      
+        <ng-template #noPoster>
+            <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg" class="img-thumbnail img-fluid poster m-3" [alt]="person.name" [title]="person.name">
+        </ng-template>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{person.name}}
+            <span *ngIf="!person.deathday">- {{person.age}}</span>
+          </h5>
+          <p class="card-text">{{person.biography}}</p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" data-bs-toggle="tooltip" title="Place of birth" data-bs-placement="left" *ngIf="person.birthday">
+                <i class="fa-regular fa-calendar-plus fa-2x"></i>{{person.birthday}}
+            </li>
+            <li class="list-group-item" data-bs-toggle="tooltip" title="Deatday" data-bs-placement="left" *ngIf="person.deathday">
+                <i class="fa-solid fa-hands-praying fa-2x"></i>{{person.deathday}}
+            </li>
+            <li class="list-group-item" data-bs-toggle="tooltip" title="Place of birth" data-bs-placement="left" *ngIf="person.place_of_birth">
+                <i class="fa-solid fa-building-user fa-2x"></i>{{person.place_of_birth}}
+            </li>
+        </ul>
+        </div>
+    </div>
+        <div class="card-footer mt-3">
+            <a target="_blank" [href]="person.homepage" *ngIf="person.homepage"><i class="fa-solid fa-globe fa-2x"></i></a>
+            <i class="fa-solid fa-globe fa-2x disabled" *ngIf="!person.homepage"></i> 
+            <a class="ms-3" target="_blank" [href]="'https://www.imdb.com/name/'+person.imdb_id" *ngIf="person.imdb_id"><i class="fa-brands fa-imdb fa-2x"></i></a>
+            <i class="ms-3 fa-solid fa-globe fa-2x disabled" *ngIf="!person.imdb_id"></i> 
+        </div>
+    </div>
+</div>
+<app-movies [model]="model" [error]="errorEmit"></app-movies>

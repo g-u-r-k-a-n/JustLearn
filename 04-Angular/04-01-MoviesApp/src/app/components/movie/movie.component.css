@@ -1,0 +1,25 @@
+.review .card-text {
+    text-align: justify !important;
+}
+
+.review img {
+    max-width: 100px;
+}
+
+.company-img {
+    max-width: 170px !important;
+    max-height: 55px !important;
+}
+
+.person-img {
+    max-width: 155px !important;
+    border-radius: 15px;
+}
+
+.movie.card {
+    overflow: hidden;
+}
+
+.movie .fa-2x {
+    margin-right: 1rem;
+}
