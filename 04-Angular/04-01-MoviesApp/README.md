@@ -1,6 +1,8 @@
-# MoviesApp
+# Movies of TMDB App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.6.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.6. and https://www.themoviedb.org services.
+
+![1](https://user-images.githubusercontent.com/55924924/194769341-5a790f54-bf2b-4669-83bf-57376a2e2a10.gif)
 
 ## Development server
 
