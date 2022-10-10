@@ -13,3 +13,4 @@
     - [04-01-TMDB Movies](https://github.com/g-u-r-k-a-n/JustLearn/tree/master/04-Angular/04-01-MoviesApp) with https://www.themoviedb.org services]        
       
       ![1](https://user-images.githubusercontent.com/55924924/194769341-5a790f54-bf2b-4669-83bf-57376a2e2a10.gif)
+      ![2](https://user-images.githubusercontent.com/55924924/194846654-f05b7cb1-0dcb-4c0c-abd9-78d282e24555.gif)
