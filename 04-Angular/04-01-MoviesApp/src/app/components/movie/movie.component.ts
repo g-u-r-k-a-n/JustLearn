@@ -35,6 +35,7 @@ export class MovieComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     const id: number = +this._activatedRoute.snapshot.paramMap.get("id");
+    const page: number = +this._activatedRoute.snapshot.paramMap.get("page");
 
     this._moviesService.getById(id).subscribe(data => {
       this.movie = data;
@@ -44,8 +45,9 @@ export class MovieComponent implements OnInit, AfterViewInit {
       this.movie.reviews = data.results;
     });
 
-    this._moviesService.getSimilarsByMovieId(id).subscribe(data => {
+    this._moviesService.getSimilarsByMovieId(id, page).subscribe(data => {
       this.model = data;
+      this.model.movieId = this.movie.id;
     });
 
     this._castService.getByMovieId(id).subscribe(data => {

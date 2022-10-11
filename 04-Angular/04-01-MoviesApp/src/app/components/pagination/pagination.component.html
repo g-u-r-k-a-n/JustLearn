@@ -28,7 +28,7 @@
         (click)="reloadComponent()">{{currentPage}}</a>
       </li>
       <li class="page-item">
-        <a class="page-link"
+        <a class="page-link"        
         routerLink="/{{urlPath}}/pages/{{model.page+1}}" 
         [class.disabled]="model.page==model.total_pages"
         (click)="reloadComponent()">

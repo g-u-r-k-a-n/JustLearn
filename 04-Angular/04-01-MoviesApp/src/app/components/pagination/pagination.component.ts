@@ -48,6 +48,9 @@ export class PaginationComponent implements OnInit, AfterViewChecked {
         case MovieHeaders.Trending:
           this.urlPath = "trending";
           break;
+        case MovieHeaders.Similar:
+          this.urlPath = `similar/${this.model.movieId}`;
+          break;
         default:
           const id: number = +this._activatedRoute.snapshot.paramMap.get("id");
           if (id && response.header.includes("genre")) {

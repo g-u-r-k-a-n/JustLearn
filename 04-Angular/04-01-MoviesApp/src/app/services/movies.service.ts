@@ -36,22 +36,19 @@ export class MoviesService {
     )
   }
 
-  getSimilarsByMovieId(id: number): Observable<MoviesResponse> {
-    return this._httpClient.get<MoviesResponse>(this._appService.urls.getSimilarMoviesByMovieId(id)).pipe(
+  getSimilarsByMovieId(id: number, page?: number): Observable<MoviesResponse> {
+    return this._httpClient.get<MoviesResponse>(this._appService.urls.getSimilarMoviesByMovieId(id) + `${page ? "&page=" + page : ""}`).pipe(
       map(data => {
         const movies = [];
         this._appService.manipulateResponses(data);
         for (let i = 0; i < data.results.length; i++) {
           const movie = data.results[i];
           movies.push(movie);
-          if (i == 7) {
-            break;
-          }
         }
         this._appService.manipulateResponses(data);
         data.results = movies;
         data.header = MovieHeaders.Similar;
-        console.log("SimilarMovies", movies);
+        console.log("SimilarMovies", data);
         return data;
       })
     );
@@ -92,6 +89,7 @@ export class MoviesResponse {
   total_pages: number;
   total_results: number;
   header?: MovieHeaders | string;
+  movieId?: number;
 }
 
 export enum MovieHeaders {

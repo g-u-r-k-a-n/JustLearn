@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: "cast/:id", component: MoviesByCastComponent },
   { path: "cast/:id/pages/:page", component: MoviesByCastComponent },
   { path: "movie/:id", component: MovieComponent },
+  { path: "similar/:id/pages/:page", component: MovieComponent },
   { path: "movies", component: MoviesComponent },
   { path: "populars/pages/:page", component: PopularMoviesComponent },
   { path: "populars", component: PopularMoviesComponent },

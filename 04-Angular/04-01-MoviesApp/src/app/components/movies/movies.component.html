@@ -7,7 +7,7 @@
         <div class="card-body">
             <h5 class="card-title">{{model.header}} Movies</h5>
             <h6 class="card-subtitle mb-2 text-muted"
-                *ngIf="model.header!='Similar' && model.total_pages">
+                *ngIf="model.total_pages">
                 {{model.total_results}} movies found in total {{model.total_pages}} pages. Current Page : {{model.page}}
             </h6>
         </div>
@@ -31,9 +31,9 @@
                         <span class="badge shadow" 
                             *ngIf="i<=2" 
                             [class]='{"text-bg-success":i==0,
-                                        "text-bg-primary":i==1,
-                                        "text-bg-dark":i==2,
-                                        "ms-1":i>0}'>{{genre.name}}</span>
+                                      "text-bg-primary":i==1,
+                                      "text-bg-dark":i==2,
+                                      "ms-1":i>0}'>{{genre.name}}</span>
                     </a>
                 </div>
                 <span class="badge img-top shadow text-bg-warning bg-warning m-3 top-0 end-0"><i
